@@ -8,6 +8,7 @@ require (
 	github.com/golang-jwt/jwt v3.2.2+incompatible
 	github.com/google/uuid v1.3.0
 	github.com/onrik/logrus v0.9.0
+	github.com/pilinux/structs v1.1.1
 	github.com/sirupsen/logrus v1.9.0
 )
 

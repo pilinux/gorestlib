@@ -2,7 +2,7 @@ package middleware
 
 // github.com/pilinux/gorestlib
 // The MIT License (MIT)
-// Copyright (c) 2022 piLinux
+// Copyright (c) 2022 pilinux
 
 import (
 	"github.com/gin-gonic/gin"

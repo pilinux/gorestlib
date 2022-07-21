@@ -5,7 +5,7 @@ package middleware
 // Copyright (c) 2014 Nick Gerakines
 // github.com/pilinux/gorestlib
 // The MIT License (MIT)
-// Copyright (c) 2022 piLinux
+// Copyright (c) 2022 pilinux
 
 import (
 	"net/http"
