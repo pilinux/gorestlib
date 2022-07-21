@@ -22,10 +22,11 @@ var (
 	RefreshKey    []byte
 	RefreshKeyTTL int
 
-	Audience  string
-	Issuer    string
-	NotBefore int
-	Subject   string
+	Audience string
+	Issuer   string
+	AccNbf   int
+	RefNbf   int
+	Subject  string
 )
 
 // myCustomClaims ...
@@ -145,15 +146,18 @@ func GetJWT(id uint64, email, role, scope, siteLan, custom1, custom2, tokenType 
 	var (
 		key []byte
 		ttl int
+		nbf int
 	)
 
 	if tokenType == "access" {
 		key = AccessKey
 		ttl = AccessKeyTTL
+		nbf = AccNbf
 	}
 	if tokenType == "refresh" {
 		key = RefreshKey
 		ttl = RefreshKeyTTL
+		nbf = RefNbf
 	}
 	// Create the Claims
 	claims := JWTClaims{
@@ -176,8 +180,8 @@ func GetJWT(id uint64, email, role, scope, siteLan, custom1, custom2, tokenType 
 		},
 	}
 
-	if NotBefore > 0 {
-		claims.NotBefore = time.Now().Add(time.Minute * time.Duration(NotBefore)).Unix()
+	if nbf > 0 {
+		claims.NotBefore = time.Now().Add(time.Second * time.Duration(nbf)).Unix()
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
