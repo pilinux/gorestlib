@@ -172,9 +172,12 @@ func GetJWT(id uint64, email, role, scope, siteLan, custom1, custom2, tokenType 
 			Id:        uuid.NewString(),
 			IssuedAt:  time.Now().Unix(),
 			Issuer:    Issuer,
-			NotBefore: time.Now().Add(time.Minute * time.Duration(NotBefore)).Unix(),
 			Subject:   Subject,
 		},
+	}
+
+	if NotBefore > 0 {
+		claims.NotBefore = time.Now().Add(time.Minute * time.Duration(NotBefore)).Unix()
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
