@@ -28,23 +28,32 @@ var (
 	Subject   string
 )
 
-// MyCustomClaims ...
-type MyCustomClaims struct {
-	AuthID uint64 `json:"AuthID"`
-	Email  string `json:"Email"`
-	Role   string `json:"Role"`
-	Scope  string `json:"Scope"`
-	Custom string `json:"Custom"`
+// myCustomClaims ...
+type myCustomClaims struct {
+	AuthID  uint64 `json:"authID,omitempty"`
+	Email   string `json:"email,omitempty"`
+	Role    string `json:"role,omitempty"`
+	Scope   string `json:"scope,omitempty"`
+	SiteLan string `json:"siteLan,omitempty"`
+	Custom1 string `json:"custom1,omitempty"`
+	Custom2 string `json:"custom2,omitempty"`
+}
+
+// JWTClaims ...
+type JWTClaims struct {
+	myCustomClaims
 	jwt.StandardClaims
 }
 
 // user-related info for JWT
 var (
-	AuthID uint64
-	Email  string
-	Role   string
-	Scope  string
-	Custom string
+	AuthID  uint64
+	Email   string
+	Role    string
+	Scope   string
+	SiteLan string
+	Custom1 string
+	Custom2 string
 )
 
 // JWTPayload ...
@@ -68,7 +77,7 @@ func JWT() gin.HandlerFunc {
 			return
 		}
 
-		token, err := jwt.ParseWithClaims(vals[1], &MyCustomClaims{}, validateAccessJWT)
+		token, err := jwt.ParseWithClaims(vals[1], &JWTClaims{}, validateAccessJWT)
 
 		if err != nil {
 			// error parsing JWT
@@ -76,12 +85,14 @@ func JWT() gin.HandlerFunc {
 			return
 		}
 
-		if claims, ok := token.Claims.(*MyCustomClaims); ok && token.Valid {
+		if claims, ok := token.Claims.(*JWTClaims); ok && token.Valid {
 			AuthID = claims.AuthID
 			Email = claims.Email
 			Role = claims.Role
 			Scope = claims.Scope
-			Custom = claims.Custom
+			SiteLan = claims.SiteLan
+			Custom1 = claims.Custom1
+			Custom2 = claims.Custom2
 		}
 	}
 }
@@ -95,18 +106,20 @@ func RefreshJWT() gin.HandlerFunc {
 			return
 		}
 
-		token, err := jwt.ParseWithClaims(jwtPayload.RefreshJWT, &MyCustomClaims{}, validateRefreshJWT)
+		token, err := jwt.ParseWithClaims(jwtPayload.RefreshJWT, &JWTClaims{}, validateRefreshJWT)
 		if err != nil {
 			c.AbortWithStatus(http.StatusUnauthorized)
 			return
 		}
 
-		if claims, ok := token.Claims.(*MyCustomClaims); ok && token.Valid {
+		if claims, ok := token.Claims.(*JWTClaims); ok && token.Valid {
 			AuthID = claims.AuthID
 			Email = claims.Email
 			Role = claims.Role
 			Scope = claims.Scope
-			Custom = claims.Custom
+			SiteLan = claims.SiteLan
+			Custom1 = claims.Custom1
+			Custom2 = claims.Custom2
 		}
 	}
 }
@@ -128,7 +141,7 @@ func validateRefreshJWT(token *jwt.Token) (interface{}, error) {
 }
 
 // GetJWT - issue new tokens
-func GetJWT(id uint64, email, role, scope, customClaim, tokenType string) (string, error) {
+func GetJWT(id uint64, email, role, scope, siteLan, custom1, custom2, tokenType string) (string, error) {
 	var (
 		key []byte
 		ttl int
@@ -143,12 +156,16 @@ func GetJWT(id uint64, email, role, scope, customClaim, tokenType string) (strin
 		ttl = RefreshKeyTTL
 	}
 	// Create the Claims
-	claims := MyCustomClaims{
-		id,
-		email,
-		role,
-		scope,
-		customClaim,
+	claims := JWTClaims{
+		myCustomClaims{
+			AuthID:  id,
+			Email:   email,
+			Role:    role,
+			Scope:   scope,
+			SiteLan: siteLan,
+			Custom1: custom1,
+			Custom2: custom2,
+		},
 		jwt.StandardClaims{
 			Audience:  Audience,
 			ExpiresAt: time.Now().Add(time.Minute * time.Duration(ttl)).Unix(),
