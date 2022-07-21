@@ -142,7 +142,7 @@ func validateRefreshJWT(token *jwt.Token) (interface{}, error) {
 }
 
 // GetJWT - issue new tokens
-func GetJWT(id uint64, email, role, scope, siteLan, custom1, custom2, tokenType string) (string, error) {
+func GetJWT(id uint64, email, role, scope, siteLan, custom1, custom2, tokenType string) (string, string, error) {
 	var (
 		key []byte
 		ttl int
@@ -188,7 +188,7 @@ func GetJWT(id uint64, email, role, scope, siteLan, custom1, custom2, tokenType 
 
 	jwtValue, err := token.SignedString(key)
 	if err != nil {
-		return "", err
+		return "", "", err
 	}
-	return jwtValue, nil
+	return jwtValue, claims.Id, nil
 }
