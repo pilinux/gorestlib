@@ -58,8 +58,8 @@ var (
 
 // JWTPayload ...
 type JWTPayload struct {
-	AccessJWT  string `json:"AccessJWT"`
-	RefreshJWT string `json:"RefreshJWT"`
+	AccessJWT  string `json:"accessJWT,omitempty"`
+	RefreshJWT string `json:"refreshJWT,omitempty"`
 }
 
 // JWT - validate access token
