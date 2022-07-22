@@ -6,23 +6,23 @@ package common
 
 import "github.com/alexedwards/argon2id"
 
-type hashPassConfig struct {
-	memory      uint32
-	iterations  uint32
-	parallelism uint8
-	saltLength  uint32
-	keyLength   uint32
+// HashPassConfig - params for argon2id
+type HashPassConfig struct {
+	Memory      uint32
+	Iterations  uint32
+	Parallelism uint8
+	SaltLength  uint32
+	KeyLength   uint32
 }
 
 // HashPass - securely hash passwords using Argon2id
-func HashPass(config hashPassConfig, pass string) (string, error) {
-	configureHash := config
+func HashPass(config HashPassConfig, pass string) (string, error) {
 	params := &argon2id.Params{
-		Memory:      configureHash.memory * 1024, // the amount of memory used by the Argon2 algorithm (in kibibytes)
-		Iterations:  configureHash.iterations,    // the number of iterations (or passes) over the memory
-		Parallelism: configureHash.parallelism,   // the number of threads (or lanes) used by the algorithm
-		SaltLength:  configureHash.saltLength,    // length of the random salt. 16 bytes is recommended for password hashing
-		KeyLength:   configureHash.keyLength,     // length of the generated key (or password hash). 16 bytes or more is recommended
+		Memory:      config.Memory * 1024, // the amount of memory used by the Argon2 algorithm (in kibibytes)
+		Iterations:  config.Iterations,    // the number of iterations (or passes) over the memory
+		Parallelism: config.Parallelism,   // the number of threads (or lanes) used by the algorithm
+		SaltLength:  config.SaltLength,    // length of the random salt. 16 bytes is recommended for password hashing
+		KeyLength:   config.KeyLength,     // length of the generated key (or password hash). 16 bytes or more is recommended
 	}
 	h, err := argon2id.CreateHash(pass, params)
 	if err != nil {
