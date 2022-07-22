@@ -3,6 +3,7 @@ module github.com/pilinux/gorestlib
 go 1.17
 
 require (
+	github.com/alexedwards/argon2id v0.0.0-20211130144151-3585854a6387
 	github.com/flosch/pongo2 v0.0.0-20200913210552-0d938eb266f3
 	github.com/gin-gonic/gin v1.8.1
 	github.com/golang-jwt/jwt v3.2.2+incompatible
@@ -26,8 +27,8 @@ require (
 	github.com/modern-go/reflect2 v1.0.2 // indirect
 	github.com/pelletier/go-toml/v2 v2.0.1 // indirect
 	github.com/ugorji/go/codec v1.2.7 // indirect
-	golang.org/x/crypto v0.0.0-20210921155107-089bfa567519 // indirect
-	golang.org/x/net v0.0.0-20211008194852-3b03d305991f // indirect
+	golang.org/x/crypto v0.0.0-20211117183948-ae814b36b871 // indirect
+	golang.org/x/net v0.0.0-20211112202133-69e39bad7dc2 // indirect
 	golang.org/x/sys v0.0.0-20220715151400-c0bba94af5f8 // indirect
 	golang.org/x/text v0.3.7 // indirect
 	google.golang.org/protobuf v1.28.0 // indirect
