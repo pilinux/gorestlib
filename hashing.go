@@ -1,4 +1,4 @@
-package common
+package gorestlib
 
 // github.com/pilinux/gorestlib
 // The MIT License (MIT)
